@@ -13,8 +13,28 @@
   <body>
     
   <div class="bg-dark py-3">
-    <h3 class="text-white text-center">Toko HP Online</h3>
+    
+    <div class="row">
+        <div class="col-md-10">
+            <h3 class="text-white text-center">Toko HP Online</h3>
+        </div>
+        <div class="col-md-2">
+
+            @if( Auth::guard('admin')->user() && Auth::guard('admin')->user()->name == "Admin" )
+                <a class="btn btn-success float-left" href="{{route('admin.logout')}}">
+                    Logout {{ Auth::guard('admin')->user()->name }}
+                </a>
+            @else
+                <a class="btn btn-success float-left" href="{{route('account.logout')}}">
+                    Logout {{ Auth::user()->name }}
+                </a>
+            @endif
+
+        </div>
+    </div>
+
   </div>
+
   <div class="container">
     <div class="row d-flex justify-content-center mt-4">
     <div class="col-md-10 d-flex justify-content-end">
@@ -56,8 +76,11 @@
                             <td>{{\Carbon\Carbon::parse($product->created_at)->format('d M, Y')}}</td>
                             <td>
     <div class="d-flex justify-content-center gap-2 align-items-center">
-        <!-- Tombol Edit -->
-        <a href="{{ route('products.edit', $product->id) }}" class="btn btn-dark">Edit</a>
+
+        @if(Auth::guard('admin')->user() && Auth::guard('admin')->user()->name == "Admin" )
+            <!-- Tombol Edit -->
+            <a href="{{ route('products.edit', $product->id) }}" class="btn btn-dark">Edit</a>
+        @endif
 
         <!-- Tombol Beli -->
         <form id="buy-product-form-{{ $product->id }}" action="{{ route('products.purchase', $product->id) }}" method="POST" style="display: inline;">
@@ -65,12 +88,16 @@
             <button type="button" class="btn btn-success" onclick="confirmAction('buy', {{ $product->id }})">Beli</button>
         </form>
 
-        <!-- Tombol Delete -->
-        <form id="delete-product-form-{{ $product->id }}" action="{{ route('products.destroy', $product->id) }}" method="POST" style="display: inline;">
-            @csrf
-            @method('DELETE')
-            <button type="button" class="btn btn-danger" onclick="confirmAction('delete', {{ $product->id }})">Delete</button>
-        </form>
+        @if( Auth::guard('admin')->user() && Auth::guard('admin')->user()->name == "Admin" )
+            <!-- Tombol Delete -->
+            <form id="delete-product-form-{{ $product->id }}" action="{{ route('products.destroy', $product->id) }}" method="POST" style="display: inline;">
+                 @csrf
+                @method('DELETE')
+                <button type="button" class="btn btn-danger" onclick="confirmAction('delete', {{ $product->id }})">Delete</button>
+            </form>
+        @endif
+    
+
     </div>
 </td>
 

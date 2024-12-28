@@ -3,7 +3,7 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Web Toko Online - Dashboard</title>
+      <title>Web Toko Online - Admin Dashboard</title>
       <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css">
    </head>
    <body class="bg-light">
@@ -25,19 +25,20 @@
                 <div class="offcanvas-body">
                     <ul class="navbar-nav justify-content-end flex-grow-1">
                         
-                    <div class="col-md-12 d-flex justify-content-end gap-4">
-                        <a href="{{route('products.index')}}" class="btn btn-primary">Toko</a>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-white" href="#!" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Hello, {{Auth::user()->name}}</a>
+                        <div class="col-md-12 d-flex justify-content-end gap-4">
+                        <a href="{{route('products.index')}}" class="btn btn-primary">Toko</a>
+                        
+                            <a class="nav-link dropdown-toggle text-white" href="#!" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Hello, {{Auth::guard('admin')->user()->name}}</a>
                             <ul class="dropdown-menu border-0 shadow bsb-zoomIn" aria-labelledby="accountDropdown">                          
                                 <li>
-                                    <a class="dropdown-item" href="{{route('account.logout')}}">Logout</a>
+                                    <a class="dropdown-item" href="{{route('admin.logout')}}">Logout</a>
                                 </li>
                             </ul>
                         </li>
                     </ul>
                 </div>
-                </div>
+            </div>
                 </div>
             </div>
         </nav>
@@ -54,18 +55,3 @@
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
    </body>
 </html>
-
-<script>
-    function confirmAction(action, id) {
-        let message = action === 'buy'
-            ? "Apakah Anda yakin ingin membeli produk ini?"
-            : "Apakah Anda yakin ingin menghapus produk ini?";
-        
-        if (confirm(message)) {
-            const formId = action === 'buy'
-                ? `buy-product-form-${id}`
-                : `delete-product-form-${id}`;
-            document.getElementById(formId).submit();
-        }
-    }
-</script>

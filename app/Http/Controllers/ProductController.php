@@ -7,6 +7,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 
 class ProductController extends Controller
@@ -143,6 +144,14 @@ class ProductController extends Controller
     public function transactions(){
     $transactions = Transaction::with('product')->orderBy('created_at', 'DESC')->get();
     return view('transactions.list', compact('transactions'));
+    }
+
+    public function get() {
+        $data = DB::select("SELECT * FROM products");
+        return response()->json([
+            "messages" => "Success get product",
+            "data"     => $data
+        ]);
     }
 
 }
